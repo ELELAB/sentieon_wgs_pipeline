@@ -1,0 +1,226 @@
+#! /bin/bash
+
+# This script attempts to wrap the action of running the SENTIEON pipeline.
+#
+# VERSION:	1.0	2020, Apr 20	K. Rapacki
+# 		1.1	2020, May 20	after moving the license server to C2
+# 		2.0	2020, Jul 17	extended with tumor-germline pairing
+# 		v2	2021, Jun	calls sentieon pipeline v2 with reference genome b38
+
+# set up environment =====================================================================================================|
+
+WRAPPER="sentieon_wrapper"
+RUN="dry"
+TYPE="unknown"
+INFILE=""
+START_DIR=`pwd`
+APPS="/home/projects/HT2_leukngs/apps"
+
+VER=1.1
+VERDATE="May 20, 2020"
+
+# prologue and epilogue scripts ------------------------------------------------------------------------------------------|
+# disabled after the license server was moved to C2
+PRO_EPI="start2 stop2"
+for word in $PRO_EPI; do
+	if [ ! -e ~/sentieon${word}.sh ]
+	then
+		echo "$WRAPPER (ERROR): ~/sentieon${word}.sh does not exist"
+	elif [ `ls -l ~/sentieon${word}.sh | cut -d' ' -f1` != "-r-x------" ]
+	then
+		echo "$WRAPPER (ERROR): ~/sentieon${word}.sh has wrong permissions (should be '-r-x------')"
+	fi
+done
+
+# modules ----------------------------------------------------------------------------------------------------------------|
+module purge
+module load tools anaconda3/4.4.0
+
+# path -------------------------------------------------------------------------------------------------------------------|
+GITHUB_DIR="/home/projects/HT2_leukngs/apps/github"
+
+if [ `echo $PATH | grep "$GITHUB_DIR/code/pipeline" | wc -l` == 0 ]
+then
+	PATH="$GITHUB_DIR/code/pipeline:$PATH"
+fi
+
+if [ `echo $PATH | grep "$GITHUB_DIR/code/computerome" | wc -l` == 0 ]
+then
+	PATH="$GITHUB_DIR/code/computerome:$PATH"
+fi
+
+# parse the command line  ================================================================================================|
+
+function usage()
+{
+	echo -e "\nUsage:"
+	echo -e "\t-c | --commit\t\t- committed run (default is dry)"
+	echo -e "\t-g | --germline\t\t- germline (WGS) sample"
+	echo -e "\t-h | --help\t\t- prints this message"
+	echo -e "\t-p | --paired\t\t- tumor to germline pairing"
+	echo -e "\t-t | --tumor\t\t- tumor (RNAseq) sample"
+	echo -e "\t-v | --version\t\t- prints version and date"
+	echo -e "\tfile | list\t\t- a FASTQ file or a list of such files"
+	echo -e "\nNotes:"
+	echo -e "\t- the sample type must be specified with either '-g', '-p' or '-t'"
+	echo -e "\t- at least one input file or list must be given"
+	echo -e "\t- a file has to have a name in the form [<full_path>]<name>.R1.fq.gz"
+	echo -e "\t- a list has to contain FQ files with names as above"
+	echo -e "\t- when '-p' is used the input files must be tumor BAM files taken from"
+	echo -e "\t  the canonical data structure and a file list cannot be used\n"
+}
+
+while [ "$1" != "" ]; do
+	PARAM=`echo $1 | awk -F= '{print $1}'`
+	VALUE=`echo $1 | awk -F= '{print $2}'`
+	case $PARAM in
+		-c | --commit)								# run type: committed (default "dry")
+			RUN="committed"
+			;;
+		-g | --germline)							# sample type: germline (no default)
+			TYPE="WGS"
+			;;
+		-h | --help)								# print help message and exit
+			usage
+			exit
+			;;
+		-e | --exome)								# print help message and exit
+			TYPE="WES"
+			exit
+			;;
+		-p | --paired)								# sample type: tumor to germline pairing
+			TYPE="paired"
+			;;
+		-t | --tumor)								# sample type: tumor (no default)
+			TYPE="RNAseq"
+			;;
+		-v | --version)								# print help message and exit
+			echo "sentieon_wrapper v.$VER from $VERDATE"
+			exit
+			;;
+		*)									# input file: FQ or list
+			if [ "`echo $PARAM | awk '{print substr($0,1,1)}'`" != "-" ]
+			then
+				INFILE="$INFILE $PARAM"
+			else
+				echo -e "\n$WRAPPER (ERROR): unknown parameter \"$PARAM\""
+				usage
+				exit 1
+		fi
+		;;
+	esac
+	shift
+done
+
+if [ $TYPE == "paired" ]	# -p is given
+then
+	$APPS/sentieon_wrapper-p $RUN $INFILE
+	exit
+fi
+
+if [ $TYPE == "unknown" ]	# -g or -t must be given
+then
+	echo -e "\n$WRAPPER (ERROR): sample type must be given (-g or -t)"
+	usage
+	exit 2
+fi
+
+if [ -z "$INFILE" ]		# at least one input file must be given
+then
+	echo -e "\n$WRAPPER (ERROR): at least one input file must be given - either a FASTQ file or a list of such files"
+	usage
+	exit 3
+fi
+
+# ========================================================================================================================|
+# MAIN ===================================================================================================================|
+# ========================================================================================================================|
+
+echo "SENTIEON pipeline wrapper script, v$VER"
+echo "Run type ................... $RUN"
+echo "Calling directory .......... $START_DIR"
+echo "Type ....................... $TYPE"
+echo "Command line input ......... \"`echo $INFILE`\""
+
+# generate a flat list of input files ------------------------------------------------------------------------------------|
+INPUT_FILES=""										# initiate flat list
+
+for word in $INFILE; do	# for all files on command line
+	if [ ! -r $word ]								# file non-existent or unreadable
+	then
+		echo "$WRAPPER (ERROR): cannot open \"$word\""
+		exit 4
+	elif [ `echo $word | grep .fq.gz$ | wc -l` == 1 ]				# FQ file
+	then
+		INPUT_FILES="$INPUT_FILES $word"
+	else										# list of FQ files
+		INPUT_FILES="$INPUT_FILES `cat $word | tr '\n' ' '`"
+	fi
+done
+echo "Number of input FQ files ... `echo $INPUT_FILES | wc -w`"
+
+echo $INPUT_FILES | gawk '{for (i=1; i<=NF; i++) printf("\t%3d %s\n",i,$i);}'
+
+# submit one by one  -----------------------------------------------------------------------------------------------------|
+
+echo -e "\nAttempting submission of `echo $INPUT_FILES | wc -w` files ..."
+let "SAMPLE_NUM = 0"
+for word in $INPUT_FILES; do							# for each input FQ file ...
+
+	let SAMPLE_NUM++
+	echo -e "\nFILE: #$SAMPLE_NUM"
+	echo -e "- preparing to submit \"$word\""
+	if [ ! -r $word ]							# ... FQ file non-existent or unreadable
+	then
+		echo "$WRAPPER (ERROR): cannot open \"$word\""
+		exit 4
+	elif [ `echo $word | grep '.R1.fq.gz$' | wc -l` != 1 ]			# ... FQ file with an illegal name
+	then
+		echo "$WRAPPER (ERROR): illegal FQ file name \"$word\", it should end with '.R1.fq.gz'"
+		exit 5
+	elif [ `echo $word | awk -F/ '{print NF}'` -gt 1 ]
+	then
+		ARENA=`echo $word | sed 's/\/[^/]*$//'`
+		INPUT_FILE=`echo $word | sed 's/^..*\///'`
+	else
+		ARENA=$START_DIR
+		INPUT_FILE=$word
+	fi
+	if [ $ARENA != $START_DIR ]
+	then
+		cd $ARENA
+		echo "- changing directory to $ARENA"
+	fi
+
+	if  [ ! -w `pwd` ]							# ... FQ file in a non-writable directory
+	then
+		echo "$WRAPPER (ERROR): cannot crerate output in \"`pwd`\""
+		exit 5
+	fi
+
+	R2="`echo $INPUT_FILE | sed 's/R1.fq.gz$/R2.fq.gz/'`"
+	if  [ ! -r $R2 ]							# ... R2 file not found
+	then
+		echo "$WRAPPER (ERROR): cannot open \"$R2\""
+		exit 6
+	fi
+	
+	echo "- ready to submit $INPUT_FILE"
+
+	# submission
+	if [ "$RUN" == "dry" ]
+	then
+		echo "submit.py \"sentieon_${TYPE}_froz38.sh $INPUT_FILE 38\" -n `echo $INPUT_FILE | sed 's/.R1.fq.gz$//'` -np 38 -move --tunnel | tee -a sentieon_wrapper.`echo $INPUT_FILE | cut -d. -f1-4`.log"
+		echo "- dry run: command to execute above"
+	else
+		echo -e "\n`date`" >> sentieon_wrapper.`echo $INPUT_FILE | cut -d. -f1-4`.log
+		submit.py "sentieon_${TYPE}_froz38.sh $INPUT_FILE 38" -n `echo $INPUT_FILE | sed 's/.R1.fq.gz$//'` -np 38 -move --tunnel | tee -a sentieon_wrapper.`echo $INPUT_FILE | cut -d. -f1-4`.log
+		echo "- submitted $INPUT_FILE"
+	fi
+	
+	cd $START_DIR
+done
+
+echo -e "\n$WRAPPER: $SAMPLE_NUM samples submitted, termination"
+
+# end of script ==========================================================================================================|
