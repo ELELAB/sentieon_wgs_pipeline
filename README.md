@@ -34,9 +34,9 @@ Usage: submit.py [-h] [-n NAME] [-no-nr] [-minutes MINUTES] [-hours HOURS]
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                [-mem MEMORY] [-dir WORKDIR] [-py2] [-w WAIT_FOR] [-T] [-R]  
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                [-a ARRAY] [-max_jobs MAX_JOBS] [--verbose] [-np NPROC][-test] [-move] script
 
-positional arguments: script &emsp;&emsp;A string indicating the code to run (sentieon_WGS_froz38.sh).
+Positional arguments: script &emsp;&emsp;A string indicating the code to run (sentieon_WGS_froz38.sh).
 
-optional arguments:  
+Optional arguments:  
 &emsp;&emsp;&emsp;  -h | --help            show this help message and exit  
 &emsp;&emsp;&emsp;  -n NAME | --name NAME&emsp;&emsp;Name of the submission job. Default is a unique number after 'icope' that doesn't create conflict.  
 &emsp;&emsp;&emsp;  -no-nr | --no-numbering&emsp;&emsp;Disable addinga number after the name in filenames to avoid overwriting files.  
