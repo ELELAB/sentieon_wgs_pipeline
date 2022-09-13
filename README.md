@@ -23,7 +23,7 @@ Notes:
 	- a file has to have a name in the form [<full_path>]<name>.R1.fq.gz (iCOPE nomenclature convention)
 	- a list has to contain FQ files with names as above
 
-Example: sentieon_wrapper_v2 -g -c [Absolute Path to file]R1.fq.gz  
+Example for a Germline WGS: sentieon_wrapper_v2 -g -c [Absolute Path to file]R1.fq.gz  
   
 This will use submit.py script to submit the specified sample to the queueing system for analysis with Sentieon DNAseq  
   
