@@ -18,7 +18,7 @@ Usage: sentieon_wrapper_v2 -[options] [absolute path to R1 file]
 &emsp;&emsp;&emsp;	file | list		- a FASTQ file or a list of such files  
 
 Notes:
-	- the sample type must be specified with either '-g', '-p' or '-t'
+	- the sample type must be specified with either '-g', or '-t'
 	- at least one input file or list must be given
 	- a file has to have a name in the form [<full_path>]<name>.R1.fq.gz (iCOPE nomenclature convention)
 	- a list has to contain FQ files with names as above
