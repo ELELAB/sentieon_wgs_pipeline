@@ -1,3 +1,7 @@
+#! /usr/bin/env bash
+#!/bin/sh
+#set -xo pipefail
+
 #   sentieon_WGS_froz38.sh - Variant calling pipeline for paired-end WGS sequencing data using Sentieon software and genome build 38.
 #   Copyright (C) 2022  Adrian Otamendi Laspiur adrota@dtu.dk
 #
@@ -14,10 +18,9 @@
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-#! /usr/bin/env bash
-#!/bin/sh
 
-#set -xo pipefail
+
+
 
 # *******************************************
 # At DTU this is VERSION 3.0. Sentieon Version: 202010.02
