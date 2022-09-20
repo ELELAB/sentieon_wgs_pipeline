@@ -40,17 +40,16 @@ Positional arguments: script &emsp;&emsp;A string indicating the code to run (se
 
 Optional arguments:  
 &emsp;&emsp;&emsp;  -h | --help            show this help message and exit  
-&emsp;&emsp;&emsp;  -n NAME | --name NAME&emsp;&emsp;Name of the submission job. Default is a unique number after 'icope' that doesn't create conflict.  
+&emsp;&emsp;&emsp;  -n NAME | --name NAME&emsp;&emsp;Name of the submission job. Default is a unique number after 'icope'.  
 &emsp;&emsp;&emsp;  -no-nr | --no-numbering&emsp;&emsp;Disable addinga number after the name in filenames to avoid overwriting files.  
-&emsp;&emsp;&emsp;  -minutes MINUTES&emsp;&emsp;Wall-time minutes. Default is 0 unless no kind of wall-time is provided, then it is 30.  
+&emsp;&emsp;&emsp;  -minutes MINUTES&emsp;&emsp;Wall-time minutes. Default is 0. If no walltime is provided, then is 30.  
 &emsp;&emsp;&emsp;  -hours HOURS | --hours HOURS&emsp;&emsp;Wall-time hours. Default is 10.  
 &emsp;&emsp;&emsp;  -mem MEMORY | --memory MEMORY&emsp;&emsp;Memory in gb. Default is 150.  
-&emsp;&emsp;&emsp;  -dir WORKDIR | --workdir WORKDIR&emsp;&emsp;The submission files are saved here. Relativefilenames in command is relative to this. &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Default is current directory.  
+&emsp;&emsp;&emsp;  -dir WORKDIR | --workdir WORKDIR&emsp;&emsp;The submission files are saved here. Relative filenames in command is relative to this. &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Default is current directory.  
 &emsp;&emsp;&emsp;  -py2 | --python2&emsp;&emsp;A flag set if we want to run the code with python2.  
-&emsp;&emsp;&emsp;  -w WAIT_FOR | --wait WAIT_FOR&emsp;&emsp;Used to wait of a given job to finish successfully. Insert the job number.  
-&emsp;&emsp;&emsp;  -T | --tunnel&emsp;&emsp;Flag set to include opening and closing tunnel for contacting Sentieon license. Default name are sentieonstart2.sh  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;and sentieonstop2.sh located in your $HOME  
-&emsp;&emsp;&emsp;  -R | --reserve         Use this flag to submit job to our own reserves nodes  
+&emsp;&emsp;&emsp;  -w WAIT_FOR | --wait WAIT_FOR&emsp;&emsp;Used to wait for a given job to finish successfully. Insert the job number.  
+&emsp;&emsp;&emsp;  -T | --tunnel&emsp;&emsp;Flag set to include opening and closing tunnel for contacting Sentieon license. Default name are &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;sentieon[start/stop]2.sh located in your $HOME  
+&emsp;&emsp;&emsp;  -R | --reserve &emsp;&emsp;Use this flag to submit job to our own reserves nodes  
 &emsp;&emsp;&emsp;  -a ARRAY | --array ARRAY&emsp;&emsp; Used to create job array, the job number will be $PBS_ARRAYID. Insert numbers to run eg. 608-631.  
 &emsp;&emsp;&emsp;  -max_jobs MAX_JOBS | --max_jobs MAX_JOBS&emsp;&emsp;Choose maximum number of jobs to run at a time from this call. This setting is &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;only relevant for array jobs. If more array jobs are started than this number, &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;some of them will wait to run.  
 &emsp;&emsp;&emsp;  --verbose&emsp;&emsp;Add to execute set -xv and more information.  
@@ -60,8 +59,11 @@ Optional arguments:
                         
                         
  Default behaviour when using `sentieon_wrapper_v2 -g -c [absolute path]R1.fq.gz`:  
-`submit.py "sentieon_WGS_froz38.sh SAMPLE_NAME.R1.fq.gz 38" -n SAMPLE_NAME -np 38 -move --tunnel | tee -a sentieon_wrapper.SAMPLE_NAME.log` 
-   
+`submit.py "sentieon_WGS_froz38.sh SAMPLE_NAME.R1.fq.gz 38" -n SAMPLE_NAME -np 38 -move --tunnel | tee -a sentieon_wrapper.SAMPLE_NAME.log`  
+
+### sentieon_WGS_froz38.sh  
+Script to run Sentieons DNAseq pipeline on germline paired-end WGS data and Human Genome build 38. Takes as input the R1.fq file and the number of available computing cores to output its corresponding BAM+RecalibrationTable as well as the VCF containing the genetic variants of the sample. Quality metrics and figures are also outputed in the results folder.       
+Usage: sentieon_WGS.froz38.sh SAMPLE_NAME.R1.fq.gz [n of cores]  
  
 # LICENSE
 The content of this repository is licensed under the terms of the GNU General 
