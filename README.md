@@ -1,35 +1,34 @@
-# sentieon_wgs_pipeline
-Germline WGS variant calling pipeline with Sentieon® (DNAseq from sentieon-genomics-202010.02) for paired-end sequencing data and wrapper+submission script for submitting the analysis in Computerome2 job system.  
+# Germline WGS Variant Calling pipeline
+Germline WGS variant calling workflow with [Sentieon®](https://www.sentieon.com) (DNAseq 202010.02) for paired-end sequencing data in Danish HPC Computerome2. Wrapper and submission scripts are included to facilitate the process.
+   
+See Sentieon's [DNAseq manual](https://support.sentieon.com/versions/202010.02/manual/DNAseq_usage/dnaseq/) and [Argument Correspondence application note](https://support.sentieon.com/appnotes/arguments/) for information on how parameters in the Sentieon tools correspond to parameters in the GATK.
 
-Sentieon DNAseq manual: https://support.sentieon.com/versions/202010.02/manual/DNAseq_usage/dnaseq/  
-See Sentieon's [Argument Correspondence application note](https://support.sentieon.com/appnotes/arguments/) for information on how parameters in the Sentieon tools correspond to parameters in the GATK.
-
-  
+ Sentieon DNAseq: 
 <img width="1127" alt="Screenshot 2022-09-13 at 13 47 26" src="https://user-images.githubusercontent.com/53432540/189893139-44809ab0-be04-4548-a9ed-9dc5c4c7970d.png">
 
 
   
-## sentieon_wrapper_v2    
-To submitt a sample for analysis in Computerome2, Sentieon_wrapper_v2.sh is used. This script uses submit.py and sentieon_WGS_froz38.sh along with the sample of interest to submit a job to the queueing system.  
+### Wrapper    
+To submitt a sample for analysis in Computerome2, `sentieon_wrapper_v2.sh` is used. This script combines all the neccesary to submit the WGS Variant caling analysis of a sample/set of samples to the queuing system of the HPC. It uses `submit.py` to generate and submit a PBS submission script (qsub) that runs the WGS pipeline script `sentieon_WGS_froz38.sh`  on the sample/s of interest.  
   
-Usage: sentieon_wrapper_v2 -[options] [absolute path to R1 file]  
+Usage: `sentieon_wrapper_v2 -[options] [Absolute path to R1.fq file]`  
+Options:  
 &emsp;&emsp;&emsp;	-c | --commit		- committed run (default is dry)  
 &emsp;&emsp;&emsp;	-g | --germline		- germline (WGS) sample  
 &emsp;&emsp;&emsp;	-h | --help		- prints this message  
-&emsp;&emsp;&emsp;	-t | --tumor		- tumor (RNAseq) sample  
 &emsp;&emsp;&emsp;	-v | --version		- prints version and date  
 &emsp;&emsp;&emsp;	file | list		- a FASTQ file or a list of such files  
 
-Notes:
-	- the sample type must be specified with either '-g', or '-t'
-	- at least one input file or list must be given
-	- a file has to have a name in the form [<full_path>]<name>.R1.fq.gz (iCOPE nomenclature convention)
-	- a list has to contain FQ files with names as above
+Notes:  
+	- the sample type (germline) must be specified with  '-g' 
+	- at least one input file or list must be given  
+	- a file has to have a name in the form `/<absolut_path>/<name>.R1.fq.gz` [(iCOPE nomenclature convention)](https://docs.google.com/document/d/1V22gvaMExWaHE1wM-0cihxBygQk6KlK9hZWnRoFvh8Y/edit#heading=h.rq7vebkfu0au)  
+	- a list has to contain FQ files with names as above  
 
-Example for a Germline WGS: sentieon_wrapper_v2 -g -c [Absolute Path to file]R1.fq.gz  
-  
-This will use submit.py script to submit the specified sample to the queueing system for analysis with Sentieon DNAseq  
-  
+Example:  
+`sentieon_wrapper_v2 -g -c [Absolute Path to file]R1.fq.gz`  
+The sample is now queued in the job system (double check with qstat command) and should be analysed in 4-8 hours.
+    
 ## submit.py  
 General job submission script (PBS based) for Computerome2.  
 
