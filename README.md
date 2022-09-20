@@ -9,7 +9,7 @@ See Sentieon's [DNAseq manual](https://support.sentieon.com/versions/202010.02/m
 
   
 ## Wrapper    
-To submitt a sample for analysis in Computerome2, `sentieon_wrapper_v2.sh` is used. This script combines all the neccesary to submit the WGS Variant caling analysis of a sample/set of samples to the queuing system of the HPC. It uses `submit.py` to generate and submit a PBS submission script (qsub) that runs the WGS pipeline script `sentieon_WGS_froz38.sh`  on the sample/s of interest.  
+To submitt a sample for analysis in Computerome2, `sentieon_wrapper_v2.sh` is used. This script combines all the neccesary to submit the WGS Variant calling analysis of a sample/set of samples to the queuing system of Computerom2 HPC. It uses `submit.py` to generate and submit a PBS submission script (qsub) that runs the WGS pipeline script `sentieon_WGS_froz38.sh`  on the sample/s of interest.  
   
 Usage: `sentieon_wrapper_v2 -[options] [absolute path to R1.fq file]`  
 Options:  
