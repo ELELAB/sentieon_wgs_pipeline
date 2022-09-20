@@ -48,7 +48,7 @@ Optional arguments:
 &emsp;&emsp;&emsp;  -dir WORKDIR | --workdir WORKDIR&emsp;&emsp;The submission files are saved here. Relativefilenames in command is relative to this. &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Default is current directory.  
 &emsp;&emsp;&emsp;  -py2 | --python2&emsp;&emsp;A flag set if we want to run the code with python2.  
 &emsp;&emsp;&emsp;  -w WAIT_FOR | --wait WAIT_FOR&emsp;&emsp;Used to wait of a given job to finish successfully. Insert the job number.  
-&emsp;&emsp;&emsp;  -T | --tunnel&emsp;&emsp;Flag set to include opening and closing tunnel for Sentieon pipeline. Default name are sentieonstart2.sh  
+&emsp;&emsp;&emsp;  -T | --tunnel&emsp;&emsp;Flag set to include opening and closing tunnel for contacting Sentieon license. Default name are sentieonstart2.sh  
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;and sentieonstop2.sh located in your $HOME  
 &emsp;&emsp;&emsp;  -R | --reserve         Use this flag to submit job to our own reserves nodes  
 &emsp;&emsp;&emsp;  -a ARRAY | --array ARRAY&emsp;&emsp; Used to create job array, the job number will be $PBS_ARRAYID. Insert numbers to run eg. 608-631.  
