@@ -63,7 +63,7 @@ Optional arguments:
 
 ### sentieon_WGS_froz38.sh  
 Script to run Sentieons DNAseq pipeline on germline paired-end WGS data and Human Genome build 38. Takes as input the R1.fq file and the number of available computing cores to output its corresponding BAM+RecalibrationTable as well as the VCF containing the genetic variants of the sample. Quality metrics and figures are also outputed in the results folder.       
-Usage: sentieon_WGS.froz38.sh SAMPLE_NAME.R1.fq.gz [n of cores]  
+Usage: `sentieon_WGS.froz38.sh SAMPLE_NAME.R1.fq.gz [n of cores]`  
  
 # LICENSE
 The content of this repository is licensed under the terms of the GNU General 
