@@ -1,6 +1,7 @@
 # sentieon_wgs_pipeline
-WGS variant calling pipeline with Sentieon® (DNAseq from sentieon-genomics-202010.02) for paired-end sequencing data and wrapper+submission script for submitting the analysis in Computerome2 job system.  
+Germline WGS variant calling pipeline with Sentieon® (DNAseq from sentieon-genomics-202010.02) for paired-end sequencing data and wrapper+submission script for submitting the analysis in Computerome2 job system.  
 Sentieon DNAseq manual: https://support.sentieon.com/versions/202010.02/manual/DNAseq_usage/dnaseq/  
+  
   
 <img width="1127" alt="Screenshot 2022-09-13 at 13 47 26" src="https://user-images.githubusercontent.com/53432540/189893139-44809ab0-be04-4548-a9ed-9dc5c4c7970d.png">
 
