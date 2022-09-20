@@ -1,5 +1,5 @@
 # Germline WGS Variant Calling pipeline
-Germline WGS variant calling workflow with [Sentieon®](https://www.sentieon.com) (DNAseq 202010.02) for paired-end sequencing data in Danish HPC Computerome2. Wrapper and submission scripts are included to facilitate the process.
+Germline WGS variant calling workflow with [Sentieon®](https://www.sentieon.com) (DNAseq 202010.02) for paired-end sequencing data in Danish HPC Computerome2. Wrapper and submission script generator are included to facilitate the process.
    
 See Sentieon's [DNAseq manual](https://support.sentieon.com/versions/202010.02/manual/DNAseq_usage/dnaseq/) and [Argument Correspondence application note](https://support.sentieon.com/appnotes/arguments/) for information on how parameters in the Sentieon tools correspond to parameters in the GATK.
 
