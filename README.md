@@ -62,7 +62,7 @@ Optional arguments:
 `submit.py "sentieon_WGS_froz38.sh SAMPLE_NAME.R1.fq.gz 38" -n SAMPLE_NAME -np 38 -move --tunnel | tee -a sentieon_wrapper.SAMPLE_NAME.log`  
 
 ### sentieon_WGS_froz38.sh  
-Script to run Sentieons DNAseq pipeline on germline paired-end WGS data and Human Genome build 38. Takes as input the R1.fq file and the number of available computing cores to output its corresponding BAM+RecalibrationTable as well as the VCF containing the genetic variants of the sample. Quality metrics and figures are also outputed in the results folder.       
+Script to run Sentieons DNAseq pipeline on a germline paired-end WGS sample with reference Human Genome build 38. Takes as input the R1.fq file and the number of available computing cores to output its corresponding BAM+RecalibrationTable as well as the VCF containing the genetic variants of the sample. Quality metrics and figures are also outputed in the results folder.       
 Usage: `sentieon_WGS.froz38.sh SAMPLE_NAME.R1.fq.gz [n of cores]`  
  
 # LICENSE
