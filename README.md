@@ -1,3 +1,5 @@
+Cancer Systems Biology, Health and Technology Department, Section for Bioinformatics, 2800, Lyngby, Denmark
+
 # Germline WGS Variant Calling pipeline
 Germline Whole Genome Sequencing (WGS) variant calling workflow with [Sentieon®](https://www.sentieon.com) (DNAseq 202010.02) for paired-end sequencing data in Danish HPC Computerome2. Wrapper and submission script-generator are included to facilitate the process.
    
@@ -92,3 +94,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+## Citation 
+
+RosettaDDGPrediction for high-throughput mutational scans: from stability to binding
+
+Valentina Sora, Adrian Otamendi Laspiur, Kristine Degn, Matteo Arnaudi, Mattia Utichi, Ludovica Beltrame, Dayana De Menezes, Matteo Orlandi, Olga Rigina, Peter Wad Sackett, Karin Wadt, Kjeld Schmiegelow, Matteo Tiberti, Elena Papaleo*
+under revision for Protein Science and on biorxiv:  https://doi.org/10.1101/2022.09.02.506350 
